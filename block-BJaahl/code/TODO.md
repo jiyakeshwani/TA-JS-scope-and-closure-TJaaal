@@ -3,11 +3,19 @@
 ```js
 function once(cb) {
   // your code goes here
+  var called = 0;
+  return function () {
+    if (called != false) {
+      cb();
+    } else {
+      return;
+    }
+  };
 }
 
 // TEST
 function sayHello() {
-  alert('Call me once!');
+  alert("Call me once!");
 }
 let log = once(sayHello);
 log(); // alert message "You can only call me once!"
@@ -17,12 +25,20 @@ log(); // return undefinde (can't be called twice)
 2. Change the above function in such a way that the function accepts two parameter a callback function and parameter for the callback function. When calling the function pass the parameters.
 
 ```js
-function once(cb) {
+function once(cb, pm) {
   // your code goes here
+  var called = 0;
+  return function () {
+    if (called != false) {
+      cb(pm);
+    } else {
+      return;
+    }
+  };
 }
 
 // TEST
-let log = once(console.log, 'Hello Console');
+let log = once(console.log, "Hello Console");
 log(); // log message "Hello Console"
 log(); // return undefinde (can't be called twice)
 ```
@@ -34,12 +50,20 @@ log(); // return undefinde (can't be called twice)
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
 
 ```js
-function once(cb) {
+function once(cb, ...pm) {
   // your code goes here
+  var called = 0;
+  return function () {
+    if (called != false) {
+      cb(...pm);
+    } else {
+      return;
+    }
+  };
 }
 
 // TEST
-let log = once(console.log, 'Message one', 'Message Two');
+let log = once(console.log, "Message one", "Message Two");
 log(); // log message "Message One Message Two"
 log(); // return undefinde (can't be called twice)
 ```
@@ -49,11 +73,17 @@ log(); // return undefinde (can't be called twice)
 ```js
 function nTimes(cb, times, ...rest) {
   // your code goes here
+  var numOfTimes = 0;
+  if (numOfTimes <= times) {
+    cb(...rest);
+  } else {
+    return undefined;
+  }
 }
 
 // TEST
 let log = (msg) => console.log(msg);
-let logThreeTimes = nTimes(log, 3, 'Hello Arya');
+let logThreeTimes = nTimes(log, 3, "Hello Arya");
 logThreeTimes(); // log message "Hello Arya" (1)
 logThreeTimes(); // log message "Hello Arya" (2)
 logThreeTimes(); // log message "Hello Arya" (3)
